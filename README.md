@@ -1,0 +1,2 @@
+# ActivityGo
+term project "ActivityGo"
