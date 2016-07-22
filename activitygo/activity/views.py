@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 
 from activity.models import User
-from activity.form import UserForm, ChangePasswordForm
+from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeEmailForm, ChangePhoneForm, ShowInfoForm
 
 
 #注册账号
@@ -33,25 +33,26 @@ def Register(Req):
 #登录界面
 def  LogIn(Req):
 	if Req.method == 'POST':
-		u = UserForm(Req.POST)
+		u = LogInUserForm(Req.POST)
 		if u.is_valid():
 			#获取表单数据，并转换为正确格式
 			un = u.cleaned_data['username']
 			pw = u.cleaned_data['password']
 			#与数据库进行比较
+            
 			user = User.objects.filter(username__exact = un, password__exact = pw)
 			if user:
 				#比较成功，跳转登录成功界面
 				response = HttpResponseRedirect('/index/')
 				#将用户名写入cookie
 				response.set_cookie('username', un, 1800)
-				
+                
 				return response
 			else:
 				#比较失败，还在login界面，显示失败信息
 				return HttpResponseRedirect('/login/')
 	else:
-		u = UserForm()
+		u = LogInUserForm()
 	return render_to_response('login.html', {'uf':u}, context_instance=RequestContext(Req))
 
 #登陆成功
@@ -71,7 +72,7 @@ def ChangePassword(Req):
 	if Req.method == 'POST':
 		cpf = ChangePasswordForm(Req.POST)
 		if cpf.is_valid():
-			un = cpf.cleaned_data['username']
+			un = Req.COOKIES.get('username', '')
 			op = cpf.cleaned_data['oldpassword']
 			np = cpf.cleaned_data['newpassword']
 			
@@ -86,3 +87,49 @@ def ChangePassword(Req):
 	else:
 		cpf = ChangePasswordForm()
 	return render_to_response('changepassword.html', {'cpf':cpf}, context_instance=RequestContext(Req))
+
+#修改邮箱
+def ChangeEmail(Req):
+	if Req.method == 'POST':
+		cef = ChangeEmailForm(Req.POST)
+		if cef.is_valid():
+			un = Req.COOKIES.get('username', '')
+			ne = cef.cleaned_data['newemail']
+			
+			user = User.objects.filter(username__exact = un)
+			if user:
+				User.objects.filter(username = un).update(email = ne)
+				
+				return HttpResponse('修改成功')
+			else:
+				#比较失败，还在changeemail界面
+				return HttpResponseRedirect('/changepassword/') 
+	else:
+		cef = ChangeEmailForm()
+	return render_to_response('changeemail.html', {'cef':cef}, context_instance=RequestContext(Req))
+
+#修改电话
+def ChangePhone(Req):
+	if Req.method == 'POST':
+		cpf = ChangePhoneForm(Req.POST)
+		if cpf.is_valid():
+			un = Req.COOKIES.get('username', '')
+			np = cpf.cleaned_data['newphone']
+			
+			user = User.objects.filter(username__exact = un)
+			if user:
+				User.objects.filter(username = un).update(phone = np)
+				
+				return HttpResponse('修改成功')
+			else:
+				#比较失败，还在changeemail界面
+				return HttpResponseRedirect('/changepassword/') 
+	else:
+		cpf = ChangePhoneForm()
+	return render_to_response('changephone.html', {'cpf':cpf}, context_instance=RequestContext(Req))
+
+#查看信息
+def ShowInfo(Req):
+    un = Req.COOKIES.get('username', '')
+    sif = User.objects.get(username = un)
+    return render_to_response('showinfo.html', {'sif':sif}, context_instance=RequestContext(Req))

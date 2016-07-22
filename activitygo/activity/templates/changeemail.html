@@ -3,17 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>修改密码</title>
+    <title>修改邮箱</title>
 </head>
 
 <body>
-<h1>修改密码页面：</h1>
+<h1>修改邮箱页面：</h1>
 <form method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
-    {{cpf.as_p}}
+    {{cef.as_p}}
     <input type="submit" value = "ok" />
 </form>
 <br>
-<a href="http://127.0.0.1:8000/index/">修改</a>
+<a href="/index">返回</a>
 </body>
 </html>
