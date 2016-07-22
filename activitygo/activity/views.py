@@ -2,15 +2,9 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
-from django import forms
-from activity.models import User
 
-#表单
-class UserForm(forms.Form):
-	username = forms.CharField(label = 'username', max_length = 100)
-	password = forms.CharField(label = 'password', max_length = 100, widget=forms.PasswordInput())
-	email = forms.CharField(label='email',max_length = 100)
-	phone = forms.CharField(label='phone',max_length=100)
+from activity.models import User
+from activity.form import UserForm, ChangePasswordForm
 
 
 #注册账号
@@ -70,3 +64,23 @@ def LogOut(Req):
 	#清除cookie
 	response.delete_cookie('username')
 	return response
+
+#修改密码
+def ChangePassword(Req):
+	if Req.method == 'POST':
+		cpf = ChangePasswordForm(Req.POST)
+		if cpf.is_valid():
+			un = Req.user.username
+			op = cpf.cleaned_data['oldpassword']
+			np = cpf.cleaned_data['newpassword']
+			user = authenticate(username=un,password=op)
+			if user:
+				user.set_password(newpassword)
+				user.save()
+				return HttpResponse('修改成功')
+			else:
+				比较失败，还在changepassword界面
+				return HttpResponseRedirect('/changepassword/') 
+	else:
+		cpf = ChangePasswordForm()
+	return render_to_response('changepassword.html', {'uf':cpf}, context_instance=RequestContext(Req))
