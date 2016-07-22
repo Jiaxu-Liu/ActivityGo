@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^regist/','activity.views.Register'),
     url(r'^index/','activity.views.index'),
     url(r'^logout/','activity.views.LogOut'),
+    url(r'^changepassword/','activity.views.ChangePassword'),
 ]

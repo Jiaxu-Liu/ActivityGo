@@ -73,14 +73,14 @@ def ChangePassword(Req):
 			un = Req.user.username
 			op = cpf.cleaned_data['oldpassword']
 			np = cpf.cleaned_data['newpassword']
-			user = authenticate(username=un,password=op)
+			user = User.objects.filter(username__exact = un, password__exact = op)
 			if user:
 				user.set_password(newpassword)
 				user.save()
 				return HttpResponse('修改成功')
 			else:
-				比较失败，还在changepassword界面
+				#比较失败，还在changepassword界面
 				return HttpResponseRedirect('/changepassword/') 
 	else:
 		cpf = ChangePasswordForm()
-	return render_to_response('changepassword.html', {'uf':cpf}, context_instance=RequestContext(Req))
+	return render_to_response('changepassword.html', {'cpf':cpf}, context_instance=RequestContext(Req))
