@@ -7,8 +7,11 @@ from activity.models import User
 
 #表单
 class UserForm(froms.Form):
-	username = froms.CharField(label = 'username', max_length = 50)
-	password = froms.CharField(label = 'password', max_length = 50)
+	username = froms.CharField(label = 'username', max_length = 100)
+	password = froms.CharField(label = 'password', max_length = 100)
+	email = forms.CharField(label='email',max_length = 100)
+    phone = forms.CharField(label='phone',max_length=100)
+
 
 #注册账号
 def Register(Req):
@@ -18,6 +21,8 @@ def Register(Req):
 			#访问表单数据，并转换为正确的格式
 			un = u.cleaned_data['username']
 			pw = u.cleaned_data['password']
+			email = uf.cleaned_data['email']
+            phone = uf.cleaned_data['phone']
 			#表单数据与数据库进行比较
 			user = User.objects.filter(username__exact = un)
 			if user:
@@ -25,7 +30,7 @@ def Register(Req):
 				return HttpResponse('该用户名已被注册')
 			else:
 				#添加至数据库
-				User.object.create(username = un, password =  pw)
+				User.object.create(username = un, password =  pw,email=email,phone=phone)
 				return HttpResponse('Regist Success')
 	else:
 		u = UserForm()
