@@ -21,8 +21,8 @@ def Register(Req):
 			#访问表单数据，并转换为正确的格式
 			un = u.cleaned_data['username']
 			pw = u.cleaned_data['password']
-			email = uf.cleaned_data['email']
-			phone = uf.cleaned_data['phone']
+			email = u.cleaned_data['email']
+			phone = u.cleaned_data['phone']
 			#表单数据与数据库进行比较
 			user = User.objects.filter(username__exact = un)
 			if user:
@@ -30,11 +30,11 @@ def Register(Req):
 				return HttpResponse('该用户名已被注册')
 			else:
 				#添加至数据库
-				User.object.create(username = un, password =  pw,email=email,phone=phone)
+				User.objects.create(username = un, password =  pw,email=email,phone=phone)
 				return HttpResponse('Regist Success')
 	else:
 		u = UserForm()
-	return render_to_response('regist.html', {'uf':u})
+	return render_to_response('regist.html', {'uf':u}, context_instance=RequestContext(Req))
 
 #登录界面
 def  LogIn(Req):
@@ -57,12 +57,12 @@ def  LogIn(Req):
 				return HttpResponseRedirect('/login/')
 	else:
 		u = UserForm()
-	return render_to_response('login.html', {'uf':u})
+	return render_to_response('login.html', {'uf':u}, context_instance=RequestContext(Req))
 
 #登陆成功
 def index(Req):
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('index', {'username': un})
+	return render_to_response('index.html', {'username': un})
 
 #注销登录
 def LogOut(Req):
