@@ -2,15 +2,15 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
-from django import froms
+from django import forms
 from activity.models import User
 
 #表单
-class UserForm(froms.Form):
-	username = froms.CharField(label = 'username', max_length = 100)
-	password = froms.CharField(label = 'password', max_length = 100)
+class UserForm(forms.Form):
+	username = forms.CharField(label = 'username', max_length = 100)
+	password = forms.CharField(label = 'password', max_length = 100, widget=forms.PasswordInput())
 	email = forms.CharField(label='email',max_length = 100)
-    phone = forms.CharField(label='phone',max_length=100)
+	phone = forms.CharField(label='phone',max_length=100)
 
 
 #注册账号
@@ -22,7 +22,7 @@ def Register(Req):
 			un = u.cleaned_data['username']
 			pw = u.cleaned_data['password']
 			email = uf.cleaned_data['email']
-            phone = uf.cleaned_data['phone']
+			phone = uf.cleaned_data['phone']
 			#表单数据与数据库进行比较
 			user = User.objects.filter(username__exact = un)
 			if user:
@@ -34,7 +34,7 @@ def Register(Req):
 				return HttpResponse('Regist Success')
 	else:
 		u = UserForm()
-	return render_to_response('regist,html', {'uf':u})
+	return render_to_response('regist.html', {'uf':u})
 
 #登录界面
 def  LogIn(Req):
@@ -55,9 +55,9 @@ def  LogIn(Req):
 			else:
 				#比较失败，还在login界面，显示失败信息
 				return HttpResponseRedirect('/login/')
-	else
+	else:
 		u = UserForm()
-	return render_to_response('login,html', {'uf':u})
+	return render_to_response('login.html', {'uf':u})
 
 #登陆成功
 def index(Req):
