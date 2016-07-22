@@ -45,6 +45,7 @@ def  LogIn(Req):
 				response = HttpResponseRedirect('/index/')
 				#将用户名写入cookie
 				response.set_cookie('username', un, 1800)
+				
 				return response
 			else:
 				#比较失败，还在login界面，显示失败信息
@@ -70,13 +71,14 @@ def ChangePassword(Req):
 	if Req.method == 'POST':
 		cpf = ChangePasswordForm(Req.POST)
 		if cpf.is_valid():
-			un = Req.user.username
+			un = cpf.cleaned_data['username']
 			op = cpf.cleaned_data['oldpassword']
 			np = cpf.cleaned_data['newpassword']
+			
 			user = User.objects.filter(username__exact = un, password__exact = op)
 			if user:
-				user.set_password(newpassword)
-				user.save()
+				User.objects.filter(username = un).update(password = np)
+				
 				return HttpResponse('修改成功')
 			else:
 				#比较失败，还在changepassword界面

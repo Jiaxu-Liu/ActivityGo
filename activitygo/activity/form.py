@@ -8,6 +8,7 @@ class UserForm(forms.Form):
 	phone = forms.CharField(label='phone',max_length=100)
 
 class ChangePasswordForm(forms.Form):
+	username = forms.CharField(label = 'user name', max_length = 100)
 	oldpassword = forms.CharField(label = 'old password', max_length = 100, widget = forms.PasswordInput())
 	newpassword = forms.CharField(label = 'new password', max_length = 100, widget = forms.PasswordInput())
 	
