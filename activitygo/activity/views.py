@@ -25,7 +25,7 @@ def Register(Req):
 			else:
 				#添加至数据库
 				User.objects.create(username = un, password =  pw,email=email,phone=phone)
-				return HttpResponse('Regist Success')
+				return HttpResponseRedirect('/registsuccess/')
 	else:
 		u = UserForm()
 	return render_to_response('regist.html', {'uf':u}, context_instance=RequestContext(Req))
@@ -80,7 +80,7 @@ def ChangePassword(Req):
 			if user:
 				User.objects.filter(username = un).update(password = np)
 				
-				return HttpResponse('修改成功')
+				return HttpResponseRedirect('/changesuccess/')
 			else:
 				#比较失败，还在changepassword界面
 				return HttpResponseRedirect('/changepassword/') 
@@ -100,7 +100,7 @@ def ChangeEmail(Req):
 			if user:
 				User.objects.filter(username = un).update(email = ne)
 				
-				return HttpResponse('修改成功')
+				return HttpResponseRedirect('/changesuccess/')
 			else:
 				#比较失败，还在changeemail界面
 				return HttpResponseRedirect('/changepassword/') 
@@ -120,7 +120,7 @@ def ChangePhone(Req):
 			if user:
 				User.objects.filter(username = un).update(phone = np)
 				
-				return HttpResponse('修改成功')
+				return HttpResponseRedirect('/changesuccess/')
 			else:
 				#比较失败，还在changeemail界面
 				return HttpResponseRedirect('/changepassword/') 
@@ -133,3 +133,10 @@ def ShowInfo(Req):
     un = Req.COOKIES.get('username', '')
     sif = User.objects.get(username = un)
     return render_to_response('showinfo.html', {'sif':sif}, context_instance=RequestContext(Req))
+
+def ChangeSuccess(Req):
+	un = Req.COOKIES.get('username', '')
+	return render_to_response('changesuccess.html',  {'username': un})
+
+def RegistSuccess(Req):
+	return render_to_response('registsuccess.html')

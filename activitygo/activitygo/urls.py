@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^changeemail/','activity.views.ChangeEmail'),
     url(r'^changephone/','activity.views.ChangePhone'),
     url(r'^showinfo/','activity.views.ShowInfo'),
+    url(r'^changesuccess/','activity.views.ChangeSuccess'),
+    url(r'^registsuccess/','activity.views.RegistSuccess'),
 ]
