@@ -29,4 +29,8 @@ urlpatterns = [
     url(r'^showinfo/','activity.views.ShowInfo'),
     url(r'^changesuccess/','activity.views.ChangeSuccess'),
     url(r'^registsuccess/','activity.views.RegistSuccess'),
+    url(r'^manageactivity/','activity.views.ManageActivity'),
+    url(r'^myactivity/','activity.views.MyActivity'),
+    url(r'^organizeactivity/','activity.views.OrganizeActivity'),
+    url(r'^joinactivity/','activity.views.JoinActivity'),
 ]

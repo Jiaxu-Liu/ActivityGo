@@ -140,3 +140,15 @@ def ChangeSuccess(Req):
 
 def RegistSuccess(Req):
 	return render_to_response('registsuccess.html')
+
+def ManageActivity(Req):
+    return render_to_response('manageactivity.html')
+
+def MyActivity(Req):
+    return render_to_response('myactivity.html')
+
+def OrganizeActivity(Req):
+    return render_to_response('organizeactivity.html')
+
+def JoinActivity(Req):
+    return render_to_response('joinactivity.html')
