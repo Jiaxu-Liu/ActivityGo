@@ -31,3 +31,9 @@ class ShowInfoForm(forms.Form):
     email = forms.CharField(label='email',max_length = 100)
     phone = forms.CharField(label='phone',max_length=100)
     headImg = forms.FileField(label = 'headimg')
+
+class CreateActivityForm(forms.Form):
+	aname = forms.CharField(label = 'ActivityName', max_length = 100)
+	adate = forms.CharField(label = 'Date(eg:2000-01-01)', max_length = 20)
+	alocation = forms.CharField(label = 'Place', max_length = 100)
+	adescription = forms.CharField(label = 'Description', max_length = 200)

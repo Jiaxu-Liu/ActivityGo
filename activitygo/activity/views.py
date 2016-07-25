@@ -3,8 +3,8 @@ from django.shortcuts import render,render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 
-from activity.models import User
-from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeImgForm, ChangeEmailForm, ChangePhoneForm, ShowInfoForm
+from activity.models import User, Activities
+from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeImgForm, ChangeEmailForm, ChangePhoneForm, ShowInfoForm, CreateActivityForm
 
 
 #注册账号
@@ -175,7 +175,18 @@ def MyActivity(Req):
     return render_to_response('myactivity.html')
 
 def OrganizeActivity(Req):
-    return render_to_response('organizeactivity.html')
+	if Req.method == 'POST':
+		crf = CreateActivityForm(Req.POST)
+		if crf.is_valid():
+			un = Req.COOKIES.get('username','')
+			an = crf.cleaned_data['aname']
+			ad = crf.cleaned_data['adate']
+			ap = crf.cleaned_data['alocation']
+			ade = crf.cleaned_data['adescription']
+			Activities.objects.create(aname=an,adate=ad,alocation=ap,adescription=ade,aorganiser=un)
+	else:
+		crf = CreateActivityForm()
+	return render_to_response('organizeactivity.html',{'crf':crf},context_instance=RequestContext(Req))
 
 def JoinActivity(Req):
     return render_to_response('joinactivity.html')

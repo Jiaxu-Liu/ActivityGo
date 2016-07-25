@@ -10,3 +10,15 @@ class User(models.Model):
 
 	def __unicode__(self):
 		return self.username
+
+class Activities(models.Model):
+	aname = models.CharField(max_length=50)
+	adate = models.CharField(max_length=20)
+	alocation = models.CharField(max_length=50)
+	adescription = models.CharField(max_length=200)
+	aorganiser = models.CharField(max_length=50)
+	aparticipants = models.ManyToManyField('User')
+	aparticipantnum = models.IntegerField(default=0)
+	astatus = models.IntegerField(default=0)
+	def __unicode__(self):
+		return self.aname

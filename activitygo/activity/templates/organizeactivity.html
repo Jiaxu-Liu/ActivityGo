@@ -8,6 +8,11 @@
 <body>
 <h1>发起活动页面：</h1>
 <p>活动信息&相关管理</p>
+<form method = 'post' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{crf.as_p}}
+    <input type="submit" value = "ok" />
+</form>
 <br>
 <a href="/manageactivity">返回</a>
 
