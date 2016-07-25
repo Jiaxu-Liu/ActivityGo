@@ -34,3 +34,4 @@ urlpatterns = [
     url(r'^organizeactivity/','activity.views.OrganizeActivity'),
     url(r'^joinactivity/','activity.views.JoinActivity'),
 ]
+
