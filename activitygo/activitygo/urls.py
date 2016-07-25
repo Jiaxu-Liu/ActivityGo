@@ -18,10 +18,11 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', 'activity.views.LogIn'),
+    url(r'^$', 'activity.views.indexNoUser'),
     url(r'^login/','activity.views.LogIn'),
     url(r'^regist/','activity.views.Register'),
     url(r'^index/','activity.views.index'),
+    url(r'^index_nouser/','activity.views.indexNoUser'),
     url(r'^logout/','activity.views.LogOut'),
     url(r'^changepassword/','activity.views.ChangePassword'),
     url(r'^changeemail/','activity.views.ChangeEmail'),
@@ -30,8 +31,9 @@ urlpatterns = [
     url(r'^showinfo/','activity.views.ShowInfo'),
     url(r'^changesuccess/','activity.views.ChangeSuccess'),
     url(r'^registsuccess/','activity.views.RegistSuccess'),
-    url(r'^manageactivity/','activity.views.ManageActivity'),
-    url(r'^myactivity/','activity.views.MyActivity'),
+    url(r'^organizesuccess/','activity.views.OrganizeSuccess'),
+    url(r'^me_joinactivity/','activity.views.MeJoinActivity'),
+    url(r'^me_organizeactivity/','activity.views.MeOrganizeActivity'),
     url(r'^organizeactivity/','activity.views.OrganizeActivity'),
     url(r'^joinactivity/','activity.views.JoinActivity'),
     url(r'^activity/static/(?P<path>.*)', 'django.views.static.serve', {'document_root': 'activity/static/'})

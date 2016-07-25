@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>修改电话</title>
-</head>
+{% extends "base.html" %}
 
-<body>
-<h1>修改电话页面：</h1>
-<form method = 'post' enctype="multipart/form-data">
+{% block content %}
+
+
+<form id="changeinfo" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
-    {{cpf.as_p}}
-    <input type="submit" value = "ok" />
+    <div class="form-group">
+        <label title="仅限输入数字" class="col-sm-offset-2 col-sm-2 control-label">New Phone</label>
+        <div class="col-sm-3">
+            <input title="仅限输入数字" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control" name="newphone" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-5 col-sm-10">
+            <button type="submit" class="btn btn-default">修改</button>
+        </div>
+    </div>
 </form>
-<br>
-<a href="/index">返回</a>
-</body>
-</html>
+
+
+{% endblock %}

@@ -1,20 +1,40 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>发起活动</title>
-</head>
+{% extends "base.html" %}
 
-<body>
-<h1>发起活动页面：</h1>
-<p>活动信息&相关管理</p>
-<form method = 'post' enctype="multipart/form-data">
-    {% csrf_token %}
-    {{crf.as_p}}
-    <input type="submit" value = "ok" />
+{% block content %}
+
+
+<form id="organizeactivity" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
+            {% csrf_token %}
+				<div class="form-group">
+					 <label title="活动名称" class="col-sm-offset-2 col-sm-2 control-label">Activity Name</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="aname" />
+					</div>
+				</div>
+				<div class="form-group">
+					 <label title="活动名称" class="col-sm-offset-2 col-sm-2 control-label">Activity Date</label>
+					<div class="col-sm-3">
+						<input type="date" class="form-control" name="adate" />
+					</div>
+				</div>
+				<div class="form-group">
+					 <label title="活动名称" class="col-sm-offset-2 col-sm-2 control-label">Activity Location</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="alocation" />
+					</div>
+				</div>
+				<div class="form-group">
+					 <label title="活动名称" class="col-sm-offset-2 col-sm-2 control-label">Activity Description</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="adescription" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-5 col-sm-10">
+						 <button type="submit" class="btn btn-default">创建</button>
+					</div>
+				</div>
 </form>
-<br>
-<a href="/manageactivity">返回</a>
 
-</body>
-</html>
+
+{% endblock %}

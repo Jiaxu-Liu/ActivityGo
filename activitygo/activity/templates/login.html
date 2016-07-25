@@ -1,18 +1,28 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>登陆</title>
-</head>
+{% extends "base_nouser.html" %}
 
-<body>
-<h1>登陆页面：</h1>
-<form method = 'post' enctype="multipart/form-data">
-    {% csrf_token %}
-    {{uf.as_p}}
-    <input type="submit" value = "ok" />
-</form>
-<br>
-<a href="/regist">注册</a>
-</body>
-</html>
+{% block content %}
+
+
+<form id="login" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
+            {% csrf_token %}
+				<div class="form-group">
+					 <label class="col-sm-offset-2 col-sm-2 control-label">Username</label>
+					<div class="col-sm-3">
+						<input type="text" class="form-control" name="username" />
+					</div>
+				</div>
+				<div class="form-group">
+					 <label class="col-sm-offset-2 col-sm-2 control-label">Password</label>
+					<div class="col-sm-3">
+						<input type="password" class="form-control" name="password" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-5 col-sm-10">
+						 <button type="submit" class="btn btn-default">登录</button>
+					</div>
+				</div>
+			</form>
+
+
+{% endblock %}

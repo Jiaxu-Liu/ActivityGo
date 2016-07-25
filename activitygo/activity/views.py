@@ -39,6 +39,7 @@ def Register(Req):
 
 #修改头像
 def ChangeHeadImg(Req):
+	un = Req.COOKIES.get('username', '')
 	if Req.method == 'POST':
 		chif = ChangeImgForm(Req.POST, Req.FILES)
 		if chif.is_valid():
@@ -55,7 +56,7 @@ def ChangeHeadImg(Req):
 				return HttpResponseRedirect('/changeheadimg/') 
 	else:
 		chif = ChangeImgForm()
-	return render_to_response('changeheadimg.html', {'chif':chif}, context_instance=RequestContext(Req))
+	return render_to_response('changeheadimg.html', {'chif':chif, 'username': un}, context_instance=RequestContext(Req))
 
 #登录界面
 def  LogIn(Req):
@@ -65,6 +66,10 @@ def  LogIn(Req):
 			#获取表单数据，并转换为正确格式
 			un = u.cleaned_data['username']
 			pw = u.cleaned_data['password']
+            
+			#un = Req.POST['InputUsername']
+			#pw = Req.POST['InputPassword']
+            
 			#与数据库进行比较
             
 			user = User.objects.filter(username__exact = un, password__exact = pw)
@@ -77,7 +82,7 @@ def  LogIn(Req):
 				return response
 			else:
 				#比较失败，还在login界面，显示失败信息
-				return HttpResponseRedirect('/login/')
+				return HttpResponseRedirect('/index_nouser/')
 	else:
 		u = LogInUserForm()
 	return render_to_response('login.html', {'uf':u}, context_instance=RequestContext(Req))
@@ -87,15 +92,21 @@ def index(Req):
 	un = Req.COOKIES.get('username', '')
 	return render_to_response('index.html', {'username': un})
 
+#未登录的主页
+def indexNoUser(Req):
+	un = Req.COOKIES.get('username', '')
+	return render_to_response('index_nouser.html', {'username': un})
+
 #注销登录
 def LogOut(Req):
-	response = HttpResponseRedirect('/login/')
+	response = HttpResponseRedirect('/index_nouser/')
 	#清除cookie
 	response.delete_cookie('username')
 	return response
 
 #修改密码
 def ChangePassword(Req):
+	un = Req.COOKIES.get('username', '')
 	if Req.method == 'POST':
 		cpf = ChangePasswordForm(Req.POST)
 		if cpf.is_valid():
@@ -113,10 +124,11 @@ def ChangePassword(Req):
 				return HttpResponseRedirect('/changepassword/') 
 	else:
 		cpf = ChangePasswordForm()
-	return render_to_response('changepassword.html', {'cpf':cpf}, context_instance=RequestContext(Req))
+	return render_to_response('changepassword.html', {'cpf':cpf, 'username': un}, context_instance=RequestContext(Req))
 
 #修改邮箱
 def ChangeEmail(Req):
+	un = Req.COOKIES.get('username', '')
 	if Req.method == 'POST':
 		cef = ChangeEmailForm(Req.POST)
 		if cef.is_valid():
@@ -133,10 +145,11 @@ def ChangeEmail(Req):
 				return HttpResponseRedirect('/changeemail/') 
 	else:
 		cef = ChangeEmailForm()
-	return render_to_response('changeemail.html', {'cef':cef}, context_instance=RequestContext(Req))
+	return render_to_response('changeemail.html', {'cef':cef, 'username': un}, context_instance=RequestContext(Req))
 
 #修改电话
 def ChangePhone(Req):
+	un = Req.COOKIES.get('username', '')
 	if Req.method == 'POST':
 		cpf = ChangePhoneForm(Req.POST)
 		if cpf.is_valid():
@@ -153,28 +166,41 @@ def ChangePhone(Req):
 				return HttpResponseRedirect('/changephone/') 
 	else:
 		cpf = ChangePhoneForm()
-	return render_to_response('changephone.html', {'cpf':cpf}, context_instance=RequestContext(Req))
+	return render_to_response('changephone.html', {'cpf':cpf, 'username': un}, context_instance=RequestContext(Req))
 
 #查看信息
 def ShowInfo(Req):
     un = Req.COOKIES.get('username', '')
     sif = User.objects.get(username = un)
-    return render_to_response('showinfo.html', {'sif':sif}, context_instance=RequestContext(Req))
+    return render_to_response('showinfo.html', {'sif':sif, 'username': un}, context_instance=RequestContext(Req))
 
+#修改信息成功
 def ChangeSuccess(Req):
 	un = Req.COOKIES.get('username', '')
 	return render_to_response('changesuccess.html',  {'username': un})
 
+#注册成功
 def RegistSuccess(Req):
 	return render_to_response('registsuccess.html')
 
-def ManageActivity(Req):
-    return render_to_response('manageactivity.html')
+#创建活动成功
+def OrganizeSuccess(Req):
+	un = Req.COOKIES.get('username','')
+	return render_to_response('organizesuccess.html',  {'username': un})
 
-def MyActivity(Req):
-    return render_to_response('myactivity.html')
+#我参与的活动
+def MeJoinActivity(Req):
+	un = Req.COOKIES.get('username', '')
+	return render_to_response('me_joinactivity.html', {'username': un})
 
+#我组织的活动
+def MeOrganizeActivity(Req):
+	un = Req.COOKIES.get('username', '')
+	return render_to_response('me_organizeactivity.html', {'username': un})
+
+#创建活动
 def OrganizeActivity(Req):
+	un = Req.COOKIES.get('username','')
 	if Req.method == 'POST':
 		crf = CreateActivityForm(Req.POST)
 		if crf.is_valid():
@@ -184,9 +210,13 @@ def OrganizeActivity(Req):
 			ap = crf.cleaned_data['alocation']
 			ade = crf.cleaned_data['adescription']
 			Activities.objects.create(aname=an,adate=ad,alocation=ap,adescription=ade,aorganiser=un)
+            
+			return HttpResponseRedirect('/organizesuccess/')
 	else:
 		crf = CreateActivityForm()
-	return render_to_response('organizeactivity.html',{'crf':crf},context_instance=RequestContext(Req))
+	return render_to_response('organizeactivity.html',{'crf':crf, 'username': un},context_instance=RequestContext(Req))
 
+#参与活动
 def JoinActivity(Req):
-    return render_to_response('joinactivity.html')
+    un = Req.COOKIES.get('username', '')
+    return render_to_response('joinactivity.html', {'username': un})
