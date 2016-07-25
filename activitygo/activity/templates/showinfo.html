@@ -8,7 +8,7 @@
 <body>
 <h1>查看信息页面：</h1>
 {% csrf_token %}
-    
+    <img src="/{{sif.headImg}}">
     <p>username:{{sif.username}}</p>
     <p>email:{{sif.email}}</p>
     <p>phone:{{sif.phone}}</p>

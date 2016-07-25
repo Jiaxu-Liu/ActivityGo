@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^changepassword/','activity.views.ChangePassword'),
     url(r'^changeemail/','activity.views.ChangeEmail'),
     url(r'^changephone/','activity.views.ChangePhone'),
+    url(r'^changeheadimg/','activity.views.ChangeHeadImg'),
     url(r'^showinfo/','activity.views.ShowInfo'),
     url(r'^changesuccess/','activity.views.ChangeSuccess'),
     url(r'^registsuccess/','activity.views.RegistSuccess'),
@@ -33,5 +34,6 @@ urlpatterns = [
     url(r'^myactivity/','activity.views.MyActivity'),
     url(r'^organizeactivity/','activity.views.OrganizeActivity'),
     url(r'^joinactivity/','activity.views.JoinActivity'),
+    url(r'^activity/static/(?P<path>.*)', 'django.views.static.serve', {'document_root': 'activity/static/'})
 ]
 

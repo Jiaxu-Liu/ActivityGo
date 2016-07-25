@@ -4,19 +4,20 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 
 from activity.models import User
-from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeEmailForm, ChangePhoneForm, ShowInfoForm
+from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeImgForm, ChangeEmailForm, ChangePhoneForm, ShowInfoForm
 
 
 #注册账号
 def Register(Req):
 	if Req.method == 'POST':
-		u = UserForm(Req.POST)
+		u = UserForm(Req.POST, Req.FILES)
 		if u.is_valid():
 			#访问表单数据，并转换为正确的格式
 			un = u.cleaned_data['username']
 			pw = u.cleaned_data['password']
 			email = u.cleaned_data['email']
 			phone = u.cleaned_data['phone']
+			headImg = u.cleaned_data['headImg']
 			#表单数据与数据库进行比较
 			user = User.objects.filter(username__exact = un)
 			if user:
@@ -24,11 +25,37 @@ def Register(Req):
 				return HttpResponse('该用户名已被注册')
 			else:
 				#添加至数据库
-				User.objects.create(username = un, password =  pw,email=email,phone=phone)
+				u1 = User()
+				u1.username = un
+				u1.password = pw
+				u1.email = email
+				u1.phone = phone
+				u1.headImg = headImg
+				u1.save()
 				return HttpResponseRedirect('/registsuccess/')
 	else:
 		u = UserForm()
 	return render_to_response('regist.html', {'uf':u}, context_instance=RequestContext(Req))
+
+#修改头像
+def ChangeHeadImg(Req):
+	if Req.method == 'POST':
+		chif = ChangeImgForm(Req.POST, Req.FILES)
+		if chif.is_valid():
+			un = Req.COOKIES.get('username', '')
+			nhi = chif.cleaned_data['newheadimg']
+			user = User.objects.filter(username__exact = un)
+			if user:
+				u1 = User.objects.get(username = un)
+				u1.headImg = nhi
+				u1.save()
+				return HttpResponseRedirect('/changesuccess/')
+			else:
+				#比较失败，还在changeheadimg界面
+				return HttpResponseRedirect('/changeheadimg/') 
+	else:
+		chif = ChangeImgForm()
+	return render_to_response('changeheadimg.html', {'chif':chif}, context_instance=RequestContext(Req))
 
 #登录界面
 def  LogIn(Req):
@@ -103,7 +130,7 @@ def ChangeEmail(Req):
 				return HttpResponseRedirect('/changesuccess/')
 			else:
 				#比较失败，还在changeemail界面
-				return HttpResponseRedirect('/changepassword/') 
+				return HttpResponseRedirect('/changeemail/') 
 	else:
 		cef = ChangeEmailForm()
 	return render_to_response('changeemail.html', {'cef':cef}, context_instance=RequestContext(Req))
@@ -122,8 +149,8 @@ def ChangePhone(Req):
 				
 				return HttpResponseRedirect('/changesuccess/')
 			else:
-				#比较失败，还在changeemail界面
-				return HttpResponseRedirect('/changepassword/') 
+				#比较失败，还在changephone界面
+				return HttpResponseRedirect('/changephone/') 
 	else:
 		cpf = ChangePhoneForm()
 	return render_to_response('changephone.html', {'cpf':cpf}, context_instance=RequestContext(Req))
