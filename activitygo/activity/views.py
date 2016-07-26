@@ -91,8 +91,9 @@ def  LogIn(Req):
 
 #登陆成功
 def index(Req):
+	all_activities = Activities.objects.all()
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('index.html', {'username': un},context_instance=RequestContext(Req))
+	return render_to_response('index.html', {'username': un, 'all_activities': all_activities},context_instance=RequestContext(Req))
 
 #未登录的主页
 def indexNoUser(Req):
@@ -227,8 +228,9 @@ def OrganizeActivity(Req):
 
 #参与活动
 def JoinActivity(Req):
-    un = Req.COOKIES.get('username', '')
-    return render_to_response('joinactivity.html', {'username': un})
+	all_activities = Activities.objects.all()
+	un = Req.COOKIES.get('username', '')
+	return render_to_response('joinactivity.html', {'username': un, 'all_activities': all_activities})
 
 def Search(Req):
 	sf = Req.GET.get('a', '')
