@@ -196,7 +196,13 @@ def MeJoinActivity(Req):
 #我组织的活动
 def MeOrganizeActivity(Req):
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('me_organizeactivity.html', {'username': un})
+	acts = Activities.objects.filter(aorganiser = un)
+
+	#这里获取了所有活动，怎么显示你们看着写吧
+
+	#for act in acts:
+		#print(act.aorganiser)
+	return render_to_response('me_organizeactivity.html', {'username': un, 'acts':acts})
 
 #创建活动
 def OrganizeActivity(Req):
