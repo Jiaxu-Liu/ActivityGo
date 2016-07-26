@@ -37,3 +37,6 @@ class CreateActivityForm(forms.Form):
 	adate = forms.CharField(label = 'Date(eg:2000-01-01)', max_length = 20)
 	alocation = forms.CharField(label = 'Place', max_length = 100)
 	adescription = forms.CharField(label = 'Description', max_length = 200)
+
+class SearchForm(forms.Form):
+	a = forms.CharField()

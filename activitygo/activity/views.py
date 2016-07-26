@@ -4,8 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 
 from activity.models import User, Activities
-from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeImgForm, ChangeEmailForm, ChangePhoneForm, ShowInfoForm, CreateActivityForm
+from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeImgForm, ChangeEmailForm, ChangePhoneForm, ShowInfoForm, CreateActivityForm, SearchForm
 
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 #注册账号
 def Register(Req):
@@ -90,13 +92,13 @@ def  LogIn(Req):
 #登陆成功
 def index(Req):
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('index.html', {'username': un})
+	return render_to_response('index.html', {'username': un},context_instance=RequestContext(Req))
 
 #未登录的主页
 def indexNoUser(Req):
 	all_activities = Activities.objects.all()
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('index_nouser.html', {'username': un, 'all_activities': all_activities})
+	return render_to_response('index_nouser.html', {'username': un, 'all_activities': all_activities},context_instance=RequestContext(Req))
 
 #注销登录
 def LogOut(Req):
@@ -227,3 +229,19 @@ def OrganizeActivity(Req):
 def JoinActivity(Req):
     un = Req.COOKIES.get('username', '')
     return render_to_response('joinactivity.html', {'username': un})
+
+def Search(Req):
+	sf = Req.GET.get('a', '')
+	results = ""
+	if sf:
+		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))
+		# results = 'You just sent %s' % acts
+		for act in list(acts):
+			results+=act.aname
+			results += " "
+		# for act in list(acts)
+		# 	print (act.adate)
+		# print (results)
+	else:
+		results = []
+	return render_to_response('list.html', {'results': results})

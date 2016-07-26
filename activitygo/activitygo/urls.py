@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^me_organizeactivity/','activity.views.MeOrganizeActivity'),
     url(r'^organizeactivity/','activity.views.OrganizeActivity'),
     url(r'^joinactivity/','activity.views.JoinActivity'),
+    url(r'^list/', 'activity.views.Search'),
     url(r'^activity/static/(?P<path>.*)', 'django.views.static.serve', {'document_root': 'activity/static/'})
 ]
 
