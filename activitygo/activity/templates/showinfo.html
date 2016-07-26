@@ -2,7 +2,7 @@
 
 {% block content %}
 {% csrf_token %}
-    <img src="/{{sif.headImg}}">
+    <img src="/{{sif.headImg}}", width="100px", height="100px">
     <p>username:{{sif.username}}</p>
     <p>email:{{sif.email}}</p>
     <p>phone:{{sif.phone}}</p>
