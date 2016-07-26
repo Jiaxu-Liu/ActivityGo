@@ -247,3 +247,15 @@ def Search(Req):
 	else:
 		results = []
 	return render_to_response('list.html', {'results': results})
+
+def join(Req, id):
+	post = Activities.objects.get(id = str(id))
+	#print(post.aname)
+	un = Req.COOKIES.get('username', '')
+	#print(un)
+	us = User.objects.get(username=un)
+	post.aparticipants.add(us)
+	#up = post.aparticipants.all()
+	#for mo in list(up):
+		#print(mo.username)
+	return HttpResponse("joined!")
