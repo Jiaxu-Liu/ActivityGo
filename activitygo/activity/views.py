@@ -94,8 +94,9 @@ def index(Req):
 
 #未登录的主页
 def indexNoUser(Req):
+	all_activities = Activities.objects.all()
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('index_nouser.html', {'username': un})
+	return render_to_response('index_nouser.html', {'username': un, 'all_activities': all_activities})
 
 #注销登录
 def LogOut(Req):
