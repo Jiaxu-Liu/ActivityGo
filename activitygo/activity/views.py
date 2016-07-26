@@ -9,6 +9,9 @@ from activity.form import UserForm, ChangePasswordForm, LogInUserForm, ChangeImg
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
+from django.core.paginator import Paginator,InvalidPage,EmptyPage,PageNotAnInteger
+import math
+
 #注册账号
 def Register(Req):
 	if Req.method == 'POST':
@@ -93,13 +96,64 @@ def  LogIn(Req):
 def index(Req):
 	all_activities = Activities.objects.all()
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('index.html', {'username': un, 'all_activities': all_activities},context_instance=RequestContext(Req))
+    #分页
+	ONE_PAGE_OF_DATA = 10  
+    
+	try:  
+		curPage = int(Req.GET.get('curPage', '1'))  
+		allPage = int(Req.GET.get('allPage','1'))  
+		pageType = str(Req.GET.get('pageType', ''))  
+	except ValueError:  
+		curPage = 1  
+		allPage = 1  
+		pageType = ''  
+    
+    #判断点击了【下一页】还是【上一页】  
+	if pageType == 'pageDown':  
+		curPage += 1  
+	elif pageType == 'pageUp':  
+		curPage -= 1  
+	startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
+	endPos = startPos + ONE_PAGE_OF_DATA  
+	posts = Activities.objects.all()[startPos:endPos]  
+    
+	if curPage == 1 and allPage == 1: 
+		allPostCounts = Activities.objects.count()  
+		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
+    #分页
+	return render_to_response('index.html', {'username': un, 'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage},context_instance=RequestContext(Req))
 
 #未登录的主页
 def indexNoUser(Req):
 	all_activities = Activities.objects.all()
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('index_nouser.html', {'username': un, 'all_activities': all_activities},context_instance=RequestContext(Req))
+	#分页
+	ONE_PAGE_OF_DATA = 10  
+    
+	try:  
+		curPage = int(Req.GET.get('curPage', '1'))  
+		allPage = int(Req.GET.get('allPage','1'))  
+		pageType = str(Req.GET.get('pageType', ''))  
+	except ValueError:  
+		curPage = 1  
+		allPage = 1  
+		pageType = ''  
+    
+    #判断点击了【下一页】还是【上一页】  
+	if pageType == 'pageDown':  
+		curPage += 1  
+	elif pageType == 'pageUp':  
+		curPage -= 1  
+	startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
+	endPos = startPos + ONE_PAGE_OF_DATA  
+	posts = Activities.objects.all()[startPos:endPos]  
+    
+	if curPage == 1 and allPage == 1: 
+		allPostCounts = Activities.objects.count()  
+		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
+    #分页
+	
+	return render_to_response('index_nouser.html', {'username': un, 'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage},context_instance=RequestContext(Req))
 
 #注销登录
 def LogOut(Req):
@@ -201,12 +255,35 @@ def MeJoinActivity(Req):
 def MeOrganizeActivity(Req):
 	un = Req.COOKIES.get('username', '')
 	acts = Activities.objects.filter(aorganiser = un)
-
-	#这里获取了所有活动，怎么显示你们看着写吧
-
-	#for act in acts:
-		#print(act.aorganiser)
-	return render_to_response('me_organizeactivity.html', {'username': un, 'acts':acts})
+	act_flag = ""
+	if acts:
+		act_flag = "1"
+    #分页
+	ONE_PAGE_OF_DATA = 10  
+    
+	try:  
+		curPage = int(Req.GET.get('curPage', '1'))  
+		allPage = int(Req.GET.get('allPage','1'))  
+		pageType = str(Req.GET.get('pageType', ''))  
+	except ValueError:  
+		curPage = 1  
+		allPage = 1  
+		pageType = ''  
+    
+    #判断点击了【下一页】还是【上一页】  
+	if pageType == 'pageDown':  
+		curPage += 1  
+	elif pageType == 'pageUp':  
+		curPage -= 1  
+	startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
+	endPos = startPos + ONE_PAGE_OF_DATA  
+	posts = Activities.objects.filter(aorganiser = un)[startPos:endPos]  
+    
+	if curPage == 1 and allPage == 1: 
+		allPostCounts = Activities.objects.filter(aorganiser = un).count()  
+		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
+    #分页
+	return render_to_response('me_organizeactivity.html', {'username': un, 'acts':acts, 'act_flag': act_flag, 'posts':posts, 'allPage':allPage, 'curPage':curPage})
 
 #创建活动
 def OrganizeActivity(Req):
@@ -230,32 +307,92 @@ def OrganizeActivity(Req):
 def JoinActivity(Req):
 	all_activities = Activities.objects.all()
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('joinactivity.html', {'username': un, 'all_activities': all_activities})
-
+    #分页
+	ONE_PAGE_OF_DATA = 10  
+    
+	try:  
+		curPage = int(Req.GET.get('curPage', '1'))  
+		allPage = int(Req.GET.get('allPage','1'))  
+		pageType = str(Req.GET.get('pageType', ''))  
+	except ValueError:  
+		curPage = 1  
+		allPage = 1  
+		pageType = ''  
+    
+    #判断点击了【下一页】还是【上一页】  
+	if pageType == 'pageDown':  
+		curPage += 1  
+	elif pageType == 'pageUp':  
+		curPage -= 1  
+	startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
+	endPos = startPos + ONE_PAGE_OF_DATA  
+	posts = Activities.objects.all()[startPos:endPos]  
+    
+	if curPage == 1 and allPage == 1: 
+		allPostCounts = Activities.objects.count()  
+		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
+    #分页
+	return render_to_response('joinactivity.html', {'username': un, 'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage})
+#检索
 def Search(Req):
-	sf = Req.GET.get('a', '')
-	results = ""
+	sf = Req.GET.get('searchcontents', '')
+	un = Req.COOKIES.get('username', '')
+	start_flag = ""
 	if sf:
 		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))
-		# results = 'You just sent %s' % acts
-		for act in list(acts):
-			results+=act.aname
-			results += " "
-		# for act in list(acts)
-		# 	print (act.adate)
-		# print (results)
 	else:
-		results = []
-	return render_to_response('list.html', {'results': results})
+		acts = []
+		start_flag = "1"
+    #分页
+	ONE_PAGE_OF_DATA = 10  
+    
+	try:  
+		curPage = int(Req.GET.get('curPage', '1'))  
+		allPage = int(Req.GET.get('allPage','1'))  
+		pageType = str(Req.GET.get('pageType', ''))  
+	except ValueError:  
+		curPage = 1  
+		allPage = 1  
+		pageType = ''  
+    
+    #判断点击了【下一页】还是【上一页】  
+	if pageType == 'pageDown':  
+		curPage += 1  
+	elif pageType == 'pageUp':  
+		curPage -= 1  
+	startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
+	endPos = startPos + ONE_PAGE_OF_DATA  
+	posts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))[startPos:endPos]  
+    
+	if curPage == 1 and allPage == 1: 
+		allPostCounts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)).count()  
+		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
+    #分页
+	return render_to_response('list.html', {'username': un, 'acts': acts, 'startflag': start_flag, 'posts':posts, 'allPage':allPage, 'curPage':curPage})
 
+#加入活动
 def join(Req, id):
-	post = Activities.objects.get(id = str(id))
-	#print(post.aname)
 	un = Req.COOKIES.get('username', '')
-	#print(un)
+	post = Activities.objects.get(id = str(id))
 	us = User.objects.get(username=un)
 	post.aparticipants.add(us)
-	#up = post.aparticipants.all()
-	#for mo in list(up):
-		#print(mo.username)
-	return HttpResponse("joined!")
+	post.aparticipantnum = post.aparticipantnum+1
+	post.save()
+	return render_to_response('joinsuccess.html',{'username': un})
+
+#活动详情
+def Detail(Req, id):
+    login_flag = ""
+    organizer_flag = ""
+    un = Req.COOKIES.get('username', '')
+    if un:
+        login_flag = ""
+    else:
+        login_flag = "1"
+    act = Activities.objects.get(id = str(id))
+    if un == act.aorganiser:
+        organizer_flag = ""
+    else:
+        organizer_flag = "1"
+    return render_to_response('detail.html',{'username': un, 'act': act, 'login_flag': login_flag, 'organizer_flag': organizer_flag})
+    

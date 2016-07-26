@@ -7,8 +7,8 @@ class UserAdmin(admin.ModelAdmin):
 	list_display = ('username', 'phone', 'email', 'credit')
 
 class ActivitiesAdmin(admin.ModelAdmin):
-	fields = ('aname', 'adate', 'alocation', 'aorganiser', 'astatus')
-	list_display = ('aname', 'adate', 'alocation', 'aorganiser', 'astatus')
+	fields = ('aname', 'adate', 'alocation', 'aorganiser','aparticipantnum', 'astatus')
+	list_display = ('aname', 'adate', 'alocation',  'aorganiser', 'astatus')
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Activities, ActivitiesAdmin)

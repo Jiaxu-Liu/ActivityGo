@@ -19,7 +19,7 @@ class Activities(models.Model):
 	adescription = models.CharField(max_length=200)
 	aorganiser = models.CharField(max_length=50)
 	aparticipants = models.ManyToManyField('User')
-	aparticipantnum = models.IntegerField(default=0)
+	aparticipantnum = models.IntegerField(default=1)
 	astatus = models.IntegerField(default=0)
 	def __unicode__(self):
 		return self.aname

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<h1>活动详情</h1>
+
+<dl class="dl-horizontal col-sm-offset-1">
+				<dt>
+					<h3>活动名称</h3>
+				</dt>
+				<dd>
+					<h3>{{act.aname}}</h3>
+				</dd>
+				<dt>
+					<h3>活动时间</h3>
+				</dt>
+				<dd>
+					<h3>{{act.adate}}</h3>
+				</dd>
+				<dt>
+					<h3>活动地点</h3>
+				</dt>
+				<dd>
+					<h3>{{act.alocation}}</h3>
+				</dd>
+				<dt>
+					<h3>活动描述</h3>
+				</dt>
+				<dd>
+					<h3>{{act.adescription}}</h3>
+				</dd>
+				<dt>
+					<h3>活动组织者</h3>
+				</dt>
+				<dd>
+					<h3>{{act.aorganiser}}</h3>
+				</dd>
+				<dt>
+					<h3>活动参与者</h3>
+				</dt>
+				<dd>
+				    <h3>
+					{% for par in act.aparticipants.all %}
+					{{par.username}} 
+					{% endfor %}
+					</h3>
+				</dd>
+			</dl>
+			
+
+{% if login_flag %}
+
+
+{% else %}
+
+    {% if organizer_flag %}
+        <h1 class="text-center"><a href="{% url 'join' id=act.id %}">JOIN!</a></h1>
+    {% else %}
+
+        
+
+    {% endif %}
+
+{% endif %}
+
+
+
+
+
+
+
+
+{% endblock %}

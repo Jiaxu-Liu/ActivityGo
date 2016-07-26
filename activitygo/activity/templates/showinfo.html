@@ -2,14 +2,43 @@
 
 {% block content %}
 {% csrf_token %}
-    <img src="/{{sif.headImg}}", width="100px", height="100px">
-    <p>username:{{sif.username}}</p>
-    <p>email:{{sif.email}}</p>
-    <p>phone:{{sif.phone}}</p>
-    <p>credit:{{sif.credit}}</p>
+   <h1>个人信息</h1>
    
-<br>
-<a href="/index">返回</a>
+    <img src="/{{sif.headImg}}" width="130px" height="130px" id="headImg">
+    
+<!--
+    <h2 class="text-center">username:{{sif.username}}</h2>
+    <h2 class="text-center">email:{{sif.email}}</h2>
+    <h2 class="text-center">phone:{{sif.phone}}</h2>
+    <h2 class="text-center">credit:{{sif.credit}}</h2>
+-->
+   
+   <dl class="dl-horizontal col-sm-offset-3">
+				<dt>
+					<h2 class="text-warning">用户名</h2>
+				</dt>
+				<dd>
+					<h2 class="text-warning">{{sif.username}}</h2>
+				</dd>
+				<dt>
+					<h2 class="text-error">邮箱</h2>
+				</dt>
+				<dd>
+					<h2 class="text-error">{{sif.email}}</h2>
+				</dd>
+				<dt>
+					<h2 class="text-info">电话</h2>
+				</dt>
+				<dd>
+					<h2 class="text-info">{{sif.phone}}</h2>
+				</dd>
+				<dt>
+					<h2 class="text-success">信用</h2>
+				</dt>
+				<dd>
+					<h2 class="text-success">{{sif.credit}}</h2>
+				</dd>
+			</dl>
 
 
 {% endblock %}

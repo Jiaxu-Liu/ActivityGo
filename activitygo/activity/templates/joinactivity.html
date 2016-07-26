@@ -3,6 +3,7 @@
 {% block content %}
 
 {% csrf_token %} 
+        <h1>参与活动</h1>
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
@@ -22,47 +23,43 @@
 					</tr>
 				</thead>
 				<tbody>
-				{% for act in all_activities %}
-					<tr>
+				{% for post in posts %}
+					<tr class="info">
 						<td>
-							{{act.aname}}
+							<a href="{% url 'detail' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
 						</td>
 						<td>
-							{{act.adate}}
+							{{post.adate}}
 						</td>
 						<td>
-							{{act.alocation}}
+							{{post.alocation}}
 						</td>
 						<td>
-						    <a href="{% url 'join' id=act.id %}">JOIN!</a>
+						    <a href="{% url 'join' id=post.id %}">JOIN!</a>
 						</td>
 					
 					</tr>
 				{% endfor %}
 				</tbody>
 			</table>
-			<ul class="pagination">
-				<li>
-					 <a href="#">Prev</a>
-				</li>
-				<li>
-					 <a href="#">1</a>
-				</li>
-				<li>
-					 <a href="#">2</a>
-				</li>
-				<li>
-					 <a href="#">3</a>
-				</li>
-				<li>
-					 <a href="#">4</a>
-				</li>
-				<li>
-					 <a href="#">5</a>
-				</li>
-				<li>
-					 <a href="#">Next</a>
-				</li>
-			</ul>
+			<div class="text-center">
+<!-- 如果当前是第一页，就不显示【上一页】链接 -->
+       <h4>  
+        {% ifnotequal curPage 1 %}  
+            <a href="?curPage={{ curPage }}&&allPage={{ allPage }}&&pageType=pageUp">  
+                上一页  
+            </a>  
+        {% endifnotequal %}   
+  
+        第{{ curPage }}/{{ allPage }}页 
+  
+         <!-- 如果当前是最后一页，就不显示【下一页】链接 -->  
+        {% ifnotequal curPage allPage %}  
+            <a href="?curPage={{ curPage }}&&allPage={{ allPage }}&&pageType=pageDown">  
+                下一页  
+            </a>  
+        {% endifnotequal %}  
+        </h4>
+</div>
 
 {% endblock %}
