@@ -7,6 +7,7 @@ class User(models.Model):
 	email = models.CharField(max_length = 50)
 	phone = models.CharField(max_length=50)
 	headImg = models.FileField(upload_to = 'activity/static/images/', default = 'activity/static/01.jpg')
+	credit = models.IntegerField(default=3)
 
 	def __unicode__(self):
 		return self.username
