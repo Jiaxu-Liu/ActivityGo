@@ -34,7 +34,17 @@
 				</thead>
 				<tbody>
 				{% for post in posts %}
+<!--				{% if post.astatus %}-->
 					<tr class="info">
+					    {% for par in post.aparticipants.all %}
+                        
+					        {% ifequal username par.username %}
+                                
+						        <tr class="warning">
+                            
+                            {% endifequal %}
+                            
+                        {% endfor %}
 						<td>
 							<a href="{% url 'detail' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
 						</td>
@@ -46,6 +56,7 @@
 						</td>
 					
 					</tr>
+<!--					{% endif %}-->
 				{% endfor %}
 				</tbody>
 			</table>

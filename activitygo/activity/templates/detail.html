@@ -55,7 +55,9 @@
 
     {% if organizer_flag %}
        {% if join_flag %}
-        <h1 class="text-center"><a href="{% url 'join' id=act.id %}">JOIN!</a></h1>
+        <h1 class="text-center"><a href="{% url 'join' id=act.id %}" title="加入该活动">JOIN!</a></h1>
+        {% else %}
+        <h1 class="text-center"><a href="{% url 'quit' id=act.id %}" title="退出该活动">QUIT!</a></h1>
         {% endif %}
     {% else %}
 

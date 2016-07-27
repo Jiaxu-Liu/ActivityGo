@@ -3,6 +3,14 @@
 {% block content %}
 
 <h1>组织活动</h1>
+{% if issuccess %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>创建成功</h4>
+        </div>
+    {% endif %} 
+
+
 <form id="organizeactivity" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
             {% csrf_token %}
 				<div class="form-group">

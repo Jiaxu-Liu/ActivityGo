@@ -7,7 +7,19 @@
             <button type="button" class="close" data-dismiss="alert">×</button>
             <h4>错误!</h4>两次输入密码不一致
         </div>
-    {% endif %}    
+    {% endif %}   
+    {% if isrepeat %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>错误!</h4>该用户已被注册
+        </div>
+    {% endif %}  
+    {% if isnotcomplete %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>错误!</h4>输入信息不完整
+        </div>
+    {% endif %} 
 <form id="regist" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
             {% csrf_token %}
 				<div class="form-group">

@@ -33,7 +33,7 @@
 				</thead>
 				<tbody>
 				{% for post in posts %} 
-					{% if post.astatus == 1 %}
+<!--					{% if post.astatus %}-->
 						<tr class="info">
 							<td>
 								<a href="{% url 'detail_nouser' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
@@ -46,7 +46,7 @@
 							</td>
 						
 						</tr>
-					{% endif %}
+<!--					{% endif %}-->
 				{% endfor %}
 				</tbody>
 			</table>
