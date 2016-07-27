@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_nouser.html" %}
 {% block content %}
 
 {% csrf_token %}
@@ -35,7 +35,7 @@
 				</dt>
 				
 				<dd>
-                    <h3><a href="{% url 'organizerdetail' id=organizer.id %}" title="点击查看组织者信息">{{act.aorganiser}}</a></h3>
+                    <h3>{{act.aorganiser}}</h3>
 				</dd>
 				
 				<dt>
@@ -50,23 +50,6 @@
 				</dd>
 			</dl>
 			
-
-
-
-    {% if organizer_flag %}
-        <h1 class="text-center"><a href="{% url 'join' id=act.id %}">JOIN!</a></h1>
-    {% else %}
-
-        
-
-    {% endif %}
-
-
-
-
-
-
-
 
 
 {% endblock %}

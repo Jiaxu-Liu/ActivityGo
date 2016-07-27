@@ -32,7 +32,7 @@
 				{% for post in posts %} 
 					<tr class="info">
 						<td>
-							<a href="{% url 'detail' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
+							<a href="{% url 'detail_nouser' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
 						</td>
 						<td>
 							{{post.adate}}

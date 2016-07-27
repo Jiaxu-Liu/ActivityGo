@@ -382,17 +382,24 @@ def join(Req, id):
 
 #活动详情
 def Detail(Req, id):
-    login_flag = ""
     organizer_flag = ""
     un = Req.COOKIES.get('username', '')
-    if un:
-        login_flag = ""
-    else:
-        login_flag = "1"
     act = Activities.objects.get(id = str(id))
+    organizer = User.objects.get(username = act.aorganiser)
     if un == act.aorganiser:
         organizer_flag = ""
     else:
         organizer_flag = "1"
-    return render_to_response('detail.html',{'username': un, 'act': act, 'login_flag': login_flag, 'organizer_flag': organizer_flag})
+    return render_to_response('detail.html',{'username': un, 'act': act, 'organizer_flag': organizer_flag, 'organizer': organizer})
+
+#活动详情 未登录
+def DetailNoUser(Req, id):
+    un = Req.COOKIES.get('username', '')
+    act = Activities.objects.get(id = str(id))
+    return render_to_response('detail_nouser.html',{'username': un, 'act': act, })
     
+#组织者信息
+def OrganizerDetail(Req, id):
+    un = Req.COOKIES.get('username', '')
+    organizer = User.objects.get(id = str(id))
+    return render_to_response('organizerdetail.html',{'username': un, 'organizer': organizer})

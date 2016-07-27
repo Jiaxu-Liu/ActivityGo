@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 {% csrf_token %}
-   <h1>个人信息</h1>
-   
-    <img src="/{{sif.headImg}}" width="130px" height="130px" id="headImg">
+
+<h1>组织者信息</h1>
+
+<img src="/{{organizer.headImg}}" width="130px" height="130px" id="headImg">
     
    
    <dl class="dl-horizontal col-sm-offset-3">
@@ -12,27 +14,31 @@
 					<h2 class="text-warning">用户名</h2>
 				</dt>
 				<dd>
-					<h2 class="text-warning">{{sif.username}}</h2>
+					<h2 class="text-warning">{{organizer.username}}</h2>
 				</dd>
 				<dt>
 					<h2 class="text-error">邮箱</h2>
 				</dt>
 				<dd>
-					<h2 class="text-error">{{sif.email}}</h2>
+					<h2 class="text-error">{{organizer.email}}</h2>
 				</dd>
 				<dt>
 					<h2 class="text-info">电话</h2>
 				</dt>
 				<dd>
-					<h2 class="text-info">{{sif.phone}}</h2>
+					<h2 class="text-info">{{organizer.phone}}</h2>
 				</dd>
 				<dt>
 					<h2 class="text-success">信用</h2>
 				</dt>
 				<dd>
-					<h2 class="text-success">{{sif.credit}}</h2>
+					<h2 class="text-success">{{organizer.credit}}</h2>
 				</dd>
 			</dl>
+			
+
+
+
 
 
 {% endblock %}

@@ -40,5 +40,7 @@ urlpatterns = [
     url(r'^activity/static/(?P<path>.*)', 'django.views.static.serve', {'document_root': 'activity/static/'}),
     url(r'^joina(?P<id>\d+)/$', 'activity.views.join', name = 'join'),
     url(r'^detaila(?P<id>\d+)/$', 'activity.views.Detail', name = 'detail'),
+    url(r'^detailnousera(?P<id>\d+)/$', 'activity.views.DetailNoUser', name = 'detail_nouser'),
+    url(r'^organizerdetaila(?P<id>\d+)/$', 'activity.views.OrganizerDetail', name = 'organizerdetail'),
 ]
 
