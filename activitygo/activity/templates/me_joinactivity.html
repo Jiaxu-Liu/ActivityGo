@@ -5,5 +5,37 @@
 
 <h1>我参与的活动</h1>
 
+<table>
+	<thead>
+		<tr>
+			<th>
+				活动名称
+			</th>
+			<th>
+				活动时间
+			</th>
+			<th>
+				活动地点
+			</th>
+						
+		</tr>
+	</thead>
+	<tbody>
+	{% for post in posts %}
+		<tr class="info">
+			<td>
+				<a href="{% url 'detail' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
+			</td>
+			<td>
+				{{post.adate}}
+			</td>
+			<td>
+				{{post.alocation}}
+			</td>
+					
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
 
 {% endblock %}

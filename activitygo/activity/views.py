@@ -249,7 +249,10 @@ def OrganizeSuccess(Req):
 #我参与的活动
 def MeJoinActivity(Req):
 	un = Req.COOKIES.get('username', '')
-	return render_to_response('me_joinactivity.html', {'username': un})
+	user = User.objects.get(username=un)
+	print(user.email)
+	posts = user.activities_set.all()
+	return render_to_response('me_joinactivity.html', {'username': un,'posts':posts})
 
 #我组织的活动
 def MeOrganizeActivity(Req):
