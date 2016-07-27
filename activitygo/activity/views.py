@@ -250,7 +250,7 @@ def OrganizeSuccess(Req):
 def MeJoinActivity(Req):
 	un = Req.COOKIES.get('username', '')
 	user = User.objects.get(username=un)
-	print(user.email)
+	#print(user.email)
 	posts = user.activities_set.all()
 	return render_to_response('me_joinactivity.html', {'username': un,'posts':posts})
 
