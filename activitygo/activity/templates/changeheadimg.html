@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h1>修改头像</h1>
+
+{% if changeheadimgsuccess %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>头像修改成功</h4>
+        </div>
+    {% endif %}  
 <form id="changeinfo" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">

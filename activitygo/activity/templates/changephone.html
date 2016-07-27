@@ -3,6 +3,13 @@
 {% block content %}
 <h1>修改电话</h1>
 
+{% if changephonesuccess %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>修改电话号码成功</h4>
+        </div>
+    {% endif %}
+
 <form id="changeinfo" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">

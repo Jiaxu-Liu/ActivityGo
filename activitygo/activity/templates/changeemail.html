@@ -2,7 +2,16 @@
 
 {% block content %}
 
+
+
 <h1>修改邮箱</h1>
+
+{% if changeemailsuccess %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>邮箱修改成功</h4>
+        </div>
+    {% endif %}  
 <form id="changeinfo" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
     <div class="form-group">

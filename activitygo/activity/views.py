@@ -39,9 +39,11 @@ def Register(Req):
 					u1.phone = phone
 					u1.headImg = headImg
 					u1.save()
-					return HttpResponseRedirect('/registsuccess/')
+
+					return render_to_response('login.html', {'registsuccess': True}, context_instance=RequestContext(Req))
 				else:
-					return HttpResponse('两次输入密码不一致')
+					
+					return render_to_response('regist.html', {'uf':u, 'isnotequal': True}, context_instance=RequestContext(Req))
 	else:
 		u = UserForm()
 	return render_to_response('regist.html', {'uf':u}, context_instance=RequestContext(Req))
@@ -59,7 +61,7 @@ def ChangeHeadImg(Req):
 				u1 = User.objects.get(username = un)
 				u1.headImg = nhi
 				u1.save()
-				return HttpResponseRedirect('/changesuccess/')
+				return render_to_response('changeheadimg.html', {'changeheadimgsuccess': True, 'chif':chif, 'username': un}, context_instance=RequestContext(Req))
 			else:
 				#比较失败，还在changeheadimg界面
 				return HttpResponseRedirect('/changeheadimg/') 
@@ -91,7 +93,7 @@ def  LogIn(Req):
 				return response
 			else:
 				#比较失败，还在login界面，显示失败信息
-				return HttpResponseRedirect('/index_nouser/')
+				return render_to_response('login.html', {'loginfail': True}, context_instance=RequestContext(Req))
 	else:
 		u = LogInUserForm()
 	return render_to_response('login.html', {'uf':u}, context_instance=RequestContext(Req))
@@ -180,10 +182,13 @@ def ChangePassword(Req):
 			if user:
 				if (np == cnp):
 					User.objects.filter(username = un).update(password = np)
+					return render_to_response('changepassword.html', {'cpf':cpf, 'username': un, 'changepasswordsuccess': True}, context_instance=RequestContext(Req))
+
+
 					
-					return HttpResponseRedirect('/changesuccess/')
 				else:
-					return HttpResponse('两次输入密码不一致')
+					return render_to_response('changepassword.html', {'cpf':cpf, 'username': un, 'isnotequal': True}, context_instance=RequestContext(Req))
+					# return HttpResponse('两次输入密码不一致')
 			else:
 				#比较失败，还在changepassword界面
 				return HttpResponseRedirect('/changepassword/') 
@@ -204,7 +209,7 @@ def ChangeEmail(Req):
 			if user:
 				User.objects.filter(username = un).update(email = ne)
 				
-				return HttpResponseRedirect('/changesuccess/')
+				return render_to_response('changeemail.html', {'cef':cef, 'username': un, 'changeemailsuccess': True}, context_instance=RequestContext(Req))
 			else:
 				#比较失败，还在changeemail界面
 				return HttpResponseRedirect('/changeemail/') 
@@ -225,7 +230,7 @@ def ChangePhone(Req):
 			if user:
 				User.objects.filter(username = un).update(phone = np)
 				
-				return HttpResponseRedirect('/changesuccess/')
+				return render_to_response('changephone.html', {'cpf':cpf, 'username': un, 'changephonesuccess': True}, context_instance=RequestContext(Req))
 			else:
 				#比较失败，还在changephone界面
 				return HttpResponseRedirect('/changephone/') 

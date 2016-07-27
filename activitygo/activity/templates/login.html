@@ -3,6 +3,19 @@
 {% block content %}
 <h1>登录</h1>
 
+{% if loginfail %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>登录失败，请重新登录</h4>
+        </div>
+    {% endif %}  
+
+{% if registsuccess %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>注册成功</h4>
+        </div>
+    {% endif %}  
 <form id="login" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
             {% csrf_token %}
 				<div class="form-group">
