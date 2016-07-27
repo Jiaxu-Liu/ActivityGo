@@ -20,6 +20,7 @@ def Register(Req):
 			#访问表单数据，并转换为正确的格式
 			un = u.cleaned_data['username']
 			pw = u.cleaned_data['password']
+			cpw = u.cleaned_data['checkpassword']
 			email = u.cleaned_data['email']
 			phone = u.cleaned_data['phone']
 			headImg = u.cleaned_data['headImg']
@@ -29,15 +30,18 @@ def Register(Req):
 				#若已经被注册了
 				return HttpResponse('该用户名已被注册')
 			else:
-				#添加至数据库
-				u1 = User()
-				u1.username = un
-				u1.password = pw
-				u1.email = email
-				u1.phone = phone
-				u1.headImg = headImg
-				u1.save()
-				return HttpResponseRedirect('/registsuccess/')
+				if (pw == cpw):
+					#添加至数据库
+					u1 = User()
+					u1.username = un
+					u1.password = pw
+					u1.email = email
+					u1.phone = phone
+					u1.headImg = headImg
+					u1.save()
+					return HttpResponseRedirect('/registsuccess/')
+				else:
+					return HttpResponse('两次输入密码不一致')
 	else:
 		u = UserForm()
 	return render_to_response('regist.html', {'uf':u}, context_instance=RequestContext(Req))
@@ -171,12 +175,15 @@ def ChangePassword(Req):
 			un = Req.COOKIES.get('username', '')
 			op = cpf.cleaned_data['oldpassword']
 			np = cpf.cleaned_data['newpassword']
-			
+			cnp = cpf.cleaned_data['checknewpassword']
 			user = User.objects.filter(username__exact = un, password__exact = op)
 			if user:
-				User.objects.filter(username = un).update(password = np)
-				
-				return HttpResponseRedirect('/changesuccess/')
+				if (np == cnp):
+					User.objects.filter(username = un).update(password = np)
+					
+					return HttpResponseRedirect('/changesuccess/')
+				else:
+					return HttpResponse('两次输入密码不一致')
 			else:
 				#比较失败，还在changepassword界面
 				return HttpResponseRedirect('/changepassword/') 
@@ -343,7 +350,7 @@ def Search(Req):
 	un = Req.COOKIES.get('username', '')
 	start_flag = ""
 	if sf:
-		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))
+		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)|Q(alocation__contains = sf))
 	else:
 		acts = []
 		start_flag = "1"
@@ -362,16 +369,16 @@ def Search(Req):
     #判断点击了【下一页】还是【上一页】  
 	if pageType == 'pageDown':  
 		curPage += 1
-		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))
+		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)|Q(alocation__contains = sf))
 	elif pageType == 'pageUp':  
 		curPage -= 1
-		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)) 
+		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)|Q(alocation__contains = sf)) 
 	startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
 	endPos = startPos + ONE_PAGE_OF_DATA  
-	posts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))[startPos:endPos]  
+	posts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)|Q(alocation__contains = sf))[startPos:endPos]  
     
 	if curPage == 1 and allPage == 1: 
-		allPostCounts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)).filter(astatus__exact = 1).count()
+		allPostCounts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)|Q(alocation__contains = sf)).filter(astatus__exact = 1).count()
 		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
     #分页
 	return render_to_response('list.html', {'username': un, 'acts': acts, 'startflag': start_flag, 'posts':posts, 'allPage':allPage, 'curPage':curPage})
