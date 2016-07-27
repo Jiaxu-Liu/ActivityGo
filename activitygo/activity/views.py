@@ -118,7 +118,7 @@ def index(Req):
 	posts = Activities.objects.all()[startPos:endPos]  
     
 	if curPage == 1 and allPage == 1: 
-		allPostCounts = Activities.objects.count()  
+		allPostCounts = Activities.objects.filter(astatus__exact = 1).count()  
 		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
     #分页
 	return render_to_response('index.html', {'username': un, 'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage},context_instance=RequestContext(Req))
@@ -149,7 +149,7 @@ def indexNoUser(Req):
 	posts = Activities.objects.all()[startPos:endPos]  
     
 	if curPage == 1 and allPage == 1: 
-		allPostCounts = Activities.objects.count()  
+		allPostCounts = Activities.objects.filter(astatus__exact = 1).count() 
 		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
     #分页
 	
@@ -332,7 +332,7 @@ def JoinActivity(Req):
 	posts = Activities.objects.all()[startPos:endPos]  
     
 	if curPage == 1 and allPage == 1: 
-		allPostCounts = Activities.objects.count()  
+		allPostCounts = Activities.objects.filter(astatus__exact = 1).count()  
 		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
     #分页
 	return render_to_response('joinactivity.html', {'username': un, 'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage})
@@ -360,15 +360,17 @@ def Search(Req):
     
     #判断点击了【下一页】还是【上一页】  
 	if pageType == 'pageDown':  
-		curPage += 1  
+		curPage += 1
+		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))
 	elif pageType == 'pageUp':  
-		curPage -= 1  
+		curPage -= 1
+		acts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)) 
 	startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
 	endPos = startPos + ONE_PAGE_OF_DATA  
 	posts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf))[startPos:endPos]  
     
 	if curPage == 1 and allPage == 1: 
-		allPostCounts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)).count()  
+		allPostCounts = Activities.objects.filter(Q(adescription__contains= sf)|Q(aname__contains = sf)|Q(aorganiser__contains = sf)).filter(astatus__exact = 1).count()
 		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
     #分页
 	return render_to_response('list.html', {'username': un, 'acts': acts, 'startflag': start_flag, 'posts':posts, 'allPage':allPage, 'curPage':curPage})

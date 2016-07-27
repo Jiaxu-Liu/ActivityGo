@@ -24,21 +24,23 @@
 				</thead>
 				<tbody>
 				{% for post in posts %}
-					<tr class="info">
-						<td>
-							<a href="{% url 'detail' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
-						</td>
-						<td>
-							{{post.adate}}
-						</td>
-						<td>
-							{{post.alocation}}
-						</td>
-						<td>
-						    <a href="{% url 'join' id=post.id %}">JOIN!</a>
-						</td>
-					
-					</tr>
+					{% if post.astatus == 1 %}
+						<tr class="info">
+							<td>
+								<a href="{% url 'detail' id=post.id %}" title="点击查看活动详情">{{post.aname}}</a>
+							</td>
+							<td>
+								{{post.adate}}
+							</td>
+							<td>
+								{{post.alocation}}
+							</td>
+							<td>
+							    <a href="{% url 'join' id=post.id %}">JOIN!</a>
+							</td>
+						
+						</tr>
+					{% endif %}
 				{% endfor %}
 				</tbody>
 			</table>
