@@ -54,7 +54,9 @@
 
 
     {% if organizer_flag %}
+       {% if join_flag %}
         <h1 class="text-center"><a href="{% url 'join' id=act.id %}">JOIN!</a></h1>
+        {% endif %}
     {% else %}
 
         

@@ -310,6 +310,7 @@ def OrganizeActivity(Req):
 def JoinActivity(Req):
 	all_activities = Activities.objects.all()
 	un = Req.COOKIES.get('username', '')
+	join_flag = 0
     #分页
 	ONE_PAGE_OF_DATA = 10  
     
@@ -335,7 +336,7 @@ def JoinActivity(Req):
 		allPostCounts = Activities.objects.filter(astatus__exact = 1).count()  
 		allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
     #分页
-	return render_to_response('joinactivity.html', {'username': un, 'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage})
+	return render_to_response('joinactivity.html', {'username': un, 'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage, 'join_flag': join_flag},context_instance=RequestContext(Req))
 #检索
 def Search(Req):
 	sf = Req.GET.get('searchcontents', '')
@@ -388,14 +389,22 @@ def join(Req, id):
 #活动详情
 def Detail(Req, id):
     organizer_flag = ""
+    join_flag = ""
     un = Req.COOKIES.get('username', '')
     act = Activities.objects.get(id = str(id))
     organizer = User.objects.get(username = act.aorganiser)
+    joinact = None
+    if act.aparticipants.all():
+        joinact = act.aparticipants.all().get(username = un)
+    if joinact:
+        join_flag = ""
+    else:
+        join_flag = "1"
     if un == act.aorganiser:
         organizer_flag = ""
     else:
         organizer_flag = "1"
-    return render_to_response('detail.html',{'username': un, 'act': act, 'organizer_flag': organizer_flag, 'organizer': organizer})
+    return render_to_response('detail.html',{'username': un, 'act': act, 'organizer_flag': organizer_flag, 'organizer': organizer, 'join_flag': join_flag})
 
 #活动详情 未登录
 def DetailNoUser(Req, id):
