@@ -39,13 +39,14 @@ def Register(Req):
 					u1.phone = phone
 					u1.headImg = headImg
 					u1.save()
-
-					return render_to_response('login.html', {'registsuccess': True}, context_instance=RequestContext(Req))
+					print(1)
+					return HttpResponseRedirect('/login/', {'registsuccess': True})
 				else:
-					
+					print(2)
 					return render_to_response('regist.html', {'uf':u, 'isnotequal': True}, context_instance=RequestContext(Req))
 	else:
 		u = UserForm()
+		print(3)
 	return render_to_response('regist.html', {'uf':u}, context_instance=RequestContext(Req))
 		
 
@@ -88,6 +89,7 @@ def  LogIn(Req):
 			if user:
 				#比较成功，跳转登录成功界面
 				response = HttpResponseRedirect('/index/')
+				print (response)
 				#将用户名写入cookie
 				response.set_cookie('username', un, 1800)
                 
