@@ -23,9 +23,9 @@
 <form id="regist" class="form-horizontal" role="form" method = 'post' enctype="multipart/form-data">
             {% csrf_token %}
 				<div class="form-group">
-					 <label title="仅限输入英文和数字" class="col-sm-offset-2 col-sm-2 control-label">Username</label>
+					 <label title="仅限输入英文和数字，请输入4-16个字符" class="col-sm-offset-2 col-sm-2 control-label">Username</label>
 					<div class="col-sm-3">
-						<input title="仅限输入英文和数字，请输入4-10个字符" onkeyup="value=value.replace(/[\W]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" class="form-control" name="username" pattern=".{4,10}"/>
+						<input title="仅限输入英文和数字，请输入4-16个字符" onkeyup="value=value.replace(/[\W]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" class="form-control" name="username" pattern=".{4,16}"/>
 					</div>
 				</div>
 				<div class="form-group">
@@ -55,9 +55,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					 <label title="仅限输入数字" class="col-sm-offset-2 col-sm-2 control-label">Phone</label>
+					 <label title="仅限输入数字，请输入6-16个字符" class="col-sm-offset-2 col-sm-2 control-label">Phone</label>
 					<div class="col-sm-3">
-						<input title="仅限输入数字" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control" name="phone" />
+						<input title="仅限输入数字，请输入6-16个字符" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" class="form-control" name="phone" pattern=".{6,16}"/>
 					</div>
 				</div>
 				<div class="form-group">

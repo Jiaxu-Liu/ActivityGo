@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', 'activity.views.indexNoUser'),
     url(r'^login/','activity.views.LogIn'),
+    url(r'^loginregistsuccess/','activity.views.LogInRegistSuccess'),
     url(r'^regist/','activity.views.Register'),
     url(r'^index/','activity.views.index'),
     url(r'^index_nouser/','activity.views.indexNoUser'),

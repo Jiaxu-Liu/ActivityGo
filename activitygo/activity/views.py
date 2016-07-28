@@ -16,6 +16,7 @@ import math
 def Register(Req):
 	if Req.method == 'POST':
 		u = UserForm(Req.POST, Req.FILES)
+		registsuccess = 0
 		if u.is_valid():
 			#访问表单数据，并转换为正确的格式
 			un = u.cleaned_data['username']
@@ -39,10 +40,10 @@ def Register(Req):
 					u1.phone = phone
 					u1.headImg = headImg
 					u1.save()
-					print(1)
-					return HttpResponseRedirect('/login/', {'registsuccess': True})
+					#print(1)
+					return HttpResponseRedirect('/loginregistsuccess/')
 				else:
-					print(2)
+					#print(2)
 					return render_to_response('regist.html', {'uf':u, 'isnotequal': True}, context_instance=RequestContext(Req))
 	else:
 		u = UserForm()
@@ -100,6 +101,35 @@ def  LogIn(Req):
 	else:
 		u = LogInUserForm()
 	return render_to_response('login.html', {'uf':u}, context_instance=RequestContext(Req))
+
+def  LogInRegistSuccess(Req):
+	if Req.method == 'POST':
+		u = LogInUserForm(Req.POST)
+		if u.is_valid():
+			#获取表单数据，并转换为正确格式
+			un = u.cleaned_data['username']
+			pw = u.cleaned_data['password']
+            
+			#un = Req.POST['InputUsername']
+			#pw = Req.POST['InputPassword']
+            
+			#与数据库进行比较
+            
+			user = User.objects.filter(username__exact = un, password__exact = pw)
+			if user:
+				#比较成功，跳转登录成功界面
+				response = HttpResponseRedirect('/index/')
+				print (response)
+				#将用户名写入cookie
+				response.set_cookie('username', un, 1800)
+                
+				return response
+			else:
+				#比较失败，还在login界面，显示失败信息
+				return render_to_response('loginregistsuccess.html', {'loginfail': True}, context_instance=RequestContext(Req))
+	else:
+		u = LogInUserForm()
+	return render_to_response('loginregistsuccess.html', {'uf':u, 'registsuccess': True}, context_instance=RequestContext(Req))
 
 #登陆成功
 def index(Req):
@@ -347,7 +377,37 @@ def OrganizeActivity(Req):
 			act = Activities.objects.create(aname=an,adate=ad,alocation=ap,adescription=ade,aorganiser=un, aparticipantnum=1)
 			act.aparticipants.add(us)
 			act.save()
-			return render_to_response('organizeactivity.html',{'crf':crf, 'username': un, 'issuccess': True},context_instance=RequestContext(Req))
+            
+			acts = Activities.objects.filter(aorganiser = un)
+			act_flag = ""
+			if acts:
+				act_flag = "1"
+			#分页
+			ONE_PAGE_OF_DATA = 10  
+    
+			try:  
+				curPage = int(Req.GET.get('curPage', '1'))  
+				allPage = int(Req.GET.get('allPage','1'))  
+				pageType = str(Req.GET.get('pageType', ''))  
+			except ValueError:  
+				curPage = 1  
+				allPage = 1  
+				pageType = ''  
+    
+			#判断点击了【下一页】还是【上一页】  
+			if pageType == 'pageDown':  
+				curPage += 1  
+			elif pageType == 'pageUp':  
+				curPage -= 1  
+			startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
+			endPos = startPos + ONE_PAGE_OF_DATA  
+			posts = Activities.objects.filter(aorganiser = un)[startPos:endPos]  
+    
+			if curPage == 1 and allPage == 1: 
+				allPostCounts = Activities.objects.filter(aorganiser = un).count()  
+				allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
+			#分页
+			return render_to_response('me_organizeactivity.html', {'username': un, 'acts':acts, 'act_flag': act_flag, 'posts':posts, 'allPage':allPage, 'curPage':curPage, 'issuccess': True},context_instance=RequestContext(Req))
 	else:
 		crf = CreateActivityForm()
 	return render_to_response('organizeactivity.html',{'crf':crf, 'username': un},context_instance=RequestContext(Req))
@@ -430,7 +490,36 @@ def join(Req, id):
 	us = User.objects.get(username=un)
 	for u in post.aparticipants.all():
 		if u.username == un:
-			return render_to_response('alreadyjoin.html',{'username': un})
+			all_activities = Activities.objects.all().filter(astatus = 1)
+			un = Req.COOKIES.get('username', '')
+			join_flag = 0
+			#分页
+			ONE_PAGE_OF_DATA = 10  
+    
+			try:  
+				curPage = int(Req.GET.get('curPage', '1'))  
+				allPage = int(Req.GET.get('allPage','1'))  
+				pageType = str(Req.GET.get('pageType', ''))  
+			except ValueError:  
+				curPage = 1  
+				allPage = 1  
+				pageType = ''  
+    
+            #判断点击了【下一页】还是【上一页】  
+			if pageType == 'pageDown':  
+				curPage += 1  
+			elif pageType == 'pageUp':  
+				curPage -= 1  
+			startPos = (curPage - 1) * ONE_PAGE_OF_DATA  
+			endPos = startPos + ONE_PAGE_OF_DATA  
+			posts = Activities.objects.all().filter(astatus = 1)[startPos:endPos]  
+    
+			if curPage == 1 and allPage == 1: 
+				allPostCounts = Activities.objects.filter(astatus__exact = 1).count()  
+				allPage = math.ceil(allPostCounts / ONE_PAGE_OF_DATA)   
+            #分页
+			#return render_to_response('alreadyjoin.html',{'username': un})
+			return render_to_response('joinactivity.html', {'username': un,'all_activities': all_activities, 'posts':posts, 'allPage':allPage, 'curPage':curPage, 'alreadyjoin': True, 'join_flag': join_flag}, context_instance=RequestContext(Req))
 	post.aparticipants.add(us)
 	post.aparticipantnum = post.aparticipantnum+1
 	post.save()

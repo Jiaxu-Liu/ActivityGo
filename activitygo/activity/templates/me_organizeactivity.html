@@ -4,6 +4,12 @@
 
 
 <h1>我组织的活动</h1>
+{% if issuccess %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <h4>创建成功</h4>
+        </div>
+    {% endif %} 
 
 {% if act_flag %}
 
