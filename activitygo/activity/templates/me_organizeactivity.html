@@ -48,11 +48,16 @@
 				{{post.alocation}}
 			</td>
                 <td>
-                    {% if post.astatus %}
+                    {% ifequal post.astatus 1 %}
                     审核通过
-                    {% else %}
+                    {% endifequal %}
+                    {% ifequal post.astatus 0 %}
                     正在审核
-                    {% endif %}
+                    {% endifequal %}
+                    {% ifequal post.astatus 2 %}
+                    审核未通过
+                    {% endifequal %}
+                    
                 </td>
 					
 		</tr>
