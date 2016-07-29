@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<h1>参与者信息</h1>
+
+<img src="/{{par.headImg}}" width="130px" height="130px" id="headImg">
+    
+   
+   <dl class="dl-horizontal col-sm-offset-3">
+				<dt>
+					<h2 class="text-warning">用户名</h2>
+				</dt>
+				<dd>
+					<h2 class="text-warning">{{par.username}}</h2>
+				</dd>
+				<dt>
+					<h2 class="text-error">邮箱</h2>
+				</dt>
+				<dd>
+					<h2 class="text-error">{{par.email}}</h2>
+				</dd>
+				<dt>
+					<h2 class="text-info">电话</h2>
+				</dt>
+				<dd>
+					<h2 class="text-info">{{par.phone}}</h2>
+				</dd>
+				<dt>
+					<h2 class="text-success">信用</h2>
+				</dt>
+				<dd>
+					<h2 class="text-success">{{par.credit}}</h2>
+				</dd>
+			</dl>
+			
+
+
+
+
+
+{% endblock %}

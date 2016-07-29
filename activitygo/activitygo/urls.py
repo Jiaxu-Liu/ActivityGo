@@ -44,5 +44,6 @@ urlpatterns = [
     url(r'^detaila(?P<id>\d+)/$', 'activity.views.Detail', name = 'detail'),
     url(r'^detailnousera(?P<id>\d+)/$', 'activity.views.DetailNoUser', name = 'detail_nouser'),
     url(r'^organizerdetaila(?P<id>\d+)/$', 'activity.views.OrganizerDetail', name = 'organizerdetail'),
+    url(r'^pardetaila(?P<id>\d+)/$', 'activity.views.ParDetail', name = 'pardetail'),
 ]
 

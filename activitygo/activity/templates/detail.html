@@ -5,6 +5,18 @@
 
 <h1>活动详情</h1>
 
+<!-- JiaThis Button BEGIN --><div id="ckepop">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_weixin">微信</a> 
+<a href="http://www.jiathis.com/share"  class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a> </div> 
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1" charset="utf-8"></script>
+ <!-- JiaThis Button END-->
+
+
+<div class="container"></div>
+
+
 <dl class="dl-horizontal col-sm-offset-1">
 				<dt>
 					<h3>活动名称</h3>
@@ -44,13 +56,18 @@
 				<dd>
 				    <h3>
 					{% for par in act.aparticipants.all %}
-					{{par.username}} 
+					
+                    {% if organizer_flag %}
+                    {{par.username}}
+                    {% else %}
+					    <a href="{% url 'pardetail' id=par.id %}" title="点击查看参与者信息">{{par.username}}</a> 
+					    {% endif %}
+					    
 					{% endfor %}
 					</h3>
 				</dd>
 			</dl>
 			
-
 
 
     {% if organizer_flag %}

@@ -640,3 +640,9 @@ def OrganizerDetail(Req, id):
     un = Req.COOKIES.get('username', '')
     organizer = User.objects.get(id = str(id))
     return render_to_response('organizerdetail.html',{'username': un, 'organizer': organizer})
+
+#参与者信息
+def ParDetail(Req, id):
+    un = Req.COOKIES.get('username', '')
+    par = User.objects.get(id = str(id))
+    return render_to_response('pardetail.html',{'username': un, 'par': par})
